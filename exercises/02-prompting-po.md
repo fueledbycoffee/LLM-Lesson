@@ -2,41 +2,43 @@
 
 ## Objectif
 
-Passer de "chat sympa" a "assistant produit" en ecrivant un prompt systeme professionnel, un script d'accueil et un format de sortie CRM.
+Passer de "chat sympa" à "assistant produit" en écrivant un prompt système professionnel, un script d'accueil et une fiche de synthèse.
 
 ## Consignes
 
 Temps : 50 minutes. Travail en groupe sur Open WebUI.
 
-### Etape 1 : Prompt systeme (20 min)
+> **Donnees contexte** : Les fichiers a coller dans votre chatbot sont dans `data/[votre-scenario]/` (ex: `data/1-lead-qualification/`). Utilisez-les comme base de connaissances.
 
-Ecrivez le prompt systeme de votre chatbot. Il doit contenir :
+### Étape 1 : Prompt système (20 min)
 
-1. **Role** : qui est le bot, pour quelle entreprise, quel objectif
+Écrivez le prompt système de votre chatbot. Il doit contenir :
+
+1. **Rôle** : qui est le bot, pour quelle entreprise, quel objectif
 2. **Ton** : style de communication (formel, consultatif, empathique...)
-3. **Perimetre** : ce qu'il fait, ce qu'il ne fait PAS
-4. **Regles anti-hallucination** :
-   - "Ne reponds que si l'info est dans ton contexte"
+3. **Périmètre** : ce qu'il fait, ce qu'il ne fait PAS
+4. **Règles anti-hallucination** :
+   - "Ne réponds que si l'info est dans ton contexte"
    - "Si tu ne sais pas, dis-le clairement"
-   - "Ne jamais inventer un prix, un delai ou une politique"
-5. **Escalade** : quand et comment transferer a un humain
+   - "Ne jamais inventer un prix, un délai ou une politique"
+5. **Escalade** : quand et comment transférer à un humain
 
-### Etape 2 : Script d'accueil (10 min)
+### Étape 2 : Script d'accueil (10 min)
 
-Ecrivez le message d'accueil du bot + les questions de clarification.
+Écrivez le message d'accueil du bot + les questions de clarification.
 
-- Message d'accueil : 2-3 phrases max, engageantes, orientees action
+- Message d'accueil : 2-3 phrases max, engageantes, orientées action
 - Questions de clarification : 3-5 questions que le bot pose pour comprendre le besoin
-- Regle : ne pas poser toutes les questions d'un coup, les enchainer naturellement
+- Règle : ne pas poser toutes les questions d'un coup, les enchaîner naturellement
 
-### Etape 3 : Format "Note CRM" (10 min)
+### Étape 3 : Format "Fiche de synthèse" (10 min)
 
-Definissez le format de sortie structure que le bot doit generer a la fin de chaque conversation.
+Définissez le format de sortie structuré que le bot doit générer à la fin de chaque conversation.
 
 Exemple de structure :
 
 ```
---- NOTE CRM ---
+--- FICHE DE SYNTHÈSE ---
 Date : [date]
 Canal : [site / chat / WhatsApp]
 Besoin principal : [1 phrase]
@@ -47,26 +49,26 @@ Priorite : [haute / moyenne / basse]
 --- FIN ---
 ```
 
-### Etape 4 : Tester (10 min)
+### Étape 4 : Tester (10 min)
 
-- Collez votre prompt systeme dans Open WebUI
-- Testez 3-4 conversations differentes
-- Verifiez : le bot respecte-t-il le ton ? Refuse-t-il de repondre quand il ne sait pas ? Produit-il la Note CRM ?
+- Collez votre prompt système dans Open WebUI
+- Testez 3-4 conversations différentes
+- Vérifiez : le bot respecte-t-il le ton ? Refuse-t-il de répondre quand il ne sait pas ? Produit-il la Fiche de synthèse ?
 
-## Criteres de reussite
+## Critères de réussite
 
-- Le prompt systeme couvre les 5 blocs (role, ton, perimetre, regles, escalade)
+- Le prompt système couvre les 5 blocs (rôle, ton, périmètre, règles, escalade)
 - Le script d'accueil est engageant et naturel
-- La Note CRM est structuree et exploitable
-- Le bot a ete teste et ajuste
+- La Fiche de synthèse est structurée et exploitable
+- Le bot a été testé et ajusté
 
 ## Aide
 
-> Cette section est masquee par defaut.
+> Cette section est masquée par défaut.
 > Appuyer sur le bouton AIDE (ou touche A) pour l'afficher.
 
-- Structure de prompt recommandee : commencez chaque section par un commentaire (# Role, # Ton, # Regles...)
+- Structure de prompt recommandée : commencez chaque section par un commentaire (# Rôle, # Ton, # Règles...)
 - Pour le ton : "Tu vouvoies toujours. Tu es professionnel et consultatif. Tu ne fais jamais de promesses."
-- Anti-hallucination : ajoutez "Si l'information n'est pas dans ton contexte, reponds : Je n'ai pas cette information, mais je peux vous mettre en relation avec un collegue."
-- Pour la Note CRM : ajoutez dans le prompt "A la fin de chaque conversation, genere une Note CRM au format suivant : ..."
-- Pour l'accueil : evitez le generique "Comment puis-je vous aider ?" — preferez "Bonjour ! Je suis l'assistant de [Marque]. Vous cherchez [besoin principal] ?"
+- Anti-hallucination : ajoutez "Si l'information n'est pas dans ton contexte, réponds : Je n'ai pas cette information, mais je peux vous mettre en relation avec un collègue."
+- Pour la Fiche de synthèse : ajoutez dans le prompt "À la fin de chaque conversation, génère une Fiche de synthèse au format suivant : ..."
+- Pour l'accueil : évitez le générique "Comment puis-je vous aider ?" — préférez "Bonjour ! Je suis l'assistant de [Marque]. Vous cherchez [besoin principal] ?"

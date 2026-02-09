@@ -2,7 +2,7 @@
 
 ## Objectif
 
-Definir votre chatbot sur 1 page. Ce document servira de "brief produit" pour tout l'apres-midi.
+Définir votre chatbot sur 1 page. Ce document servira de "brief produit" pour tout l'après-midi.
 
 ## Consignes
 
@@ -12,13 +12,13 @@ Remplissez les 6 blocs ci-dessous sur une feuille ou un doc partage.
 
 ### Bloc 1 : Persona & Job-to-be-done
 
-- Qui est l'utilisateur du chatbot ? (role, contexte, etat d'esprit)
-- Quel probleme cherche-t-il a resoudre ?
-- Qu'est-ce qui compte le plus pour lui ? (rapidite, precision, empathie...)
+- Qui est l'utilisateur du chatbot ? (rôle, contexte, état d'esprit)
+- Quel problème cherche-t-il à résoudre ?
+- Qu'est-ce qui compte le plus pour lui ? (rapidité, précision, empathie...)
 
 ### Bloc 2 : Top 10 intents / questions
 
-Listez les 10 questions/demandes les plus frequentes que le bot devra traiter.
+Listez les 10 questions/demandes les plus fréquentes que le bot devra traiter.
 
 1. ...
 2. ...
@@ -33,11 +33,11 @@ Listez les 10 questions/demandes les plus frequentes que le bot devra traiter.
 
 ### Bloc 3 : Ton de marque & interdits
 
-- Quel ton adopter ? (tutoyement/vouvoiement, formel/decontracte, expert/accessible)
-- 3 adjectifs qui decrivent la personnalite du bot
+- Quel ton adopter ? (tutoyement/vouvoiement, formel/décontracté, expert/accessible)
+- 3 adjectifs qui décrivent la personnalité du bot
 - Liste des interdits (ce que le bot ne doit JAMAIS faire)
 
-### Bloc 4 : Donnees necessaires
+### Bloc 4 : Données nécessaires
 
 Quelles sources d'information le bot doit-il avoir ?
 
@@ -47,38 +47,38 @@ Quelles sources d'information le bot doit-il avoir ?
 - Tarifs (exacts ou fourchettes)
 - Autres : ...
 
-### Bloc 5 : Regles d'escalade humain
+### Bloc 5 : Règles d'escalade humain
 
-- Dans quels cas le bot doit-il transferer a un humain ?
+- Dans quels cas le bot doit-il transférer à un humain ?
 - Comment le fait-il ? (message type)
-- Quel delai de reponse humaine annoncer ?
+- Quel délai de réponse humaine annoncer ?
 
 ### Bloc 6 : KPI
 
-Choisissez 3-5 KPI pour mesurer le succes du chatbot :
+Choisissez 3-5 KPI pour mesurer le succès du chatbot :
 
 - Taux de conversion
 - Taux de qualification lead
 - CSAT (satisfaction client)
 - Taux de deflexion (resolu sans humain)
-- Temps de reponse moyen
+- Temps de réponse moyen
 - Taux d'escalade
 - Autre : ...
 
-## Criteres de reussite
+## Critères de réussite
 
 - Les 6 blocs sont remplis
-- Le perimetre est clair (ce que le bot fait ET ne fait pas)
+- Le périmètre est clair (ce que le bot fait ET ne fait pas)
 - Les interdits sont explicites
 - Les KPI sont mesurables
 
 ## Aide
 
-> Cette section est masquee par defaut.
+> Cette section est masquée par défaut.
 > Appuyer sur le bouton AIDE (ou touche A) pour l'afficher.
 
-- Commencez par le persona : si vous ne savez pas a qui vous parlez, le reste sera flou
+- Commencez par le persona : si vous ne savez pas à qui vous parlez, le reste sera flou
 - Pour les intents : pensez "qu'est-ce que les gens tapent dans Google ou demandent au support ?"
-- Pour les interdits : pensez aux pires scenarios (prix invente, promesse impossible, donnees sensibles)
-- Pour les KPI : choisissez des metriques que vous pourriez vraiment suivre en production
+- Pour les interdits : pensez aux pires scénarios (prix inventé, promesse impossible, données sensibles)
+- Pour les KPI : choisissez des métriques que vous pourriez vraiment suivre en production
 - N'oubliez pas l'escalade : un bon bot sait quand il ne sait pas

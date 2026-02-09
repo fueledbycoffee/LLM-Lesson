@@ -1,81 +1,83 @@
-# Brief 4 — Support & fidelisation
+# Brief 4 — Support & fidélisation
 
-## "Pre-triage + ticket parfait"
+## "Pré-triage + ticket parfait"
+
+### Marque : **CloudBox**
 
 ### Contexte
 
-Chatbot sur la page support. Il doit resoudre les questions simples + creer un ticket "propre" si necessaire.
+Vous êtes CloudBox, un service de stockage cloud français. Chatbot sur la page support. Il doit résoudre les questions simples + créer un ticket "propre" si nécessaire.
 
 ### Objectif business
 
-- Deflexion (resoudre sans humain)
-- Reduire l'effort client
-- Tickets plus propres = resolution plus rapide
+- Déflexion (résoudre sans humain)
+- Réduire l'effort client
+- Tickets plus propres = résolution plus rapide
 
 ### Persona
 
-Client frustre ou presse, veut une solution immediate.
+Client frustré ou pressé, veut une solution immédiate.
 
 ### Top intents
 
-- "Ou est ma commande ?"
-- "Je veux retourner / echanger"
+- "Où est ma commande ?"
+- "Je veux retourner / échanger"
 - "Le produit ne marche plus"
 - "Facture / paiement"
-- "J'ai un probleme de compte"
+- "J'ai un problème de compte"
 
 ### Contraintes / garde-fous
 
 - Ne pas demander d'infos sensibles (CB, mots de passe)
-- Collecte minimale : numero de commande / email (si necessaire)
-- Escalade immediate si : menace legale, donnees personnelles, harcelement, situation a risque
+- Collecte minimale : numéro de commande / email (si nécessaire)
+- Escalade immédiate si : menace légale, données personnelles, harcèlement, situation à risque
 - Si incertitude, poser 1-2 questions max puis escalader
 
-### Donnees disponibles (a coller en contexte)
+### Données disponibles (à coller en contexte)
 
 ```
 FAQ SUPPORT :
 
-Q: Ou est ma commande ?
-R: Verifiez votre email de confirmation pour le lien de suivi.
-   Si pas recu sous 48h apres commande, contactez-nous avec
-   votre numero de commande.
+Q: Où est ma commande ?
+R: Vérifiez votre email de confirmation pour le lien de suivi.
+   Si pas reçu sous 48h après commande, contactez-nous avec
+   votre numéro de commande.
 
 Q: Comment retourner un produit ?
 R: Connectez-vous > Mes commandes > Demander un retour.
-   Delai : 30 jours apres reception. Produit non utilise,
+   Délai : 30 jours après réception. Produit non utilisé,
    emballage d'origine. Retour gratuit.
 
-Q: Le produit est defectueux
-R: Garantie 2 ans. Contactez le support avec : numero de
-   commande + photo du defaut. Echange ou remboursement
+Q: Le produit est défectueux
+R: Garantie 2 ans. Contactez le support avec : numéro de
+   commande + photo du défaut. Échange ou remboursement
    sous 5 jours ouvrables.
 
-Q: Probleme de paiement
-R: Verifiez que votre carte n'est pas expiree. Essayez un
-   autre moyen de paiement. Si le probleme persiste, contactez
+Q: Problème de paiement
+R: Vérifiez que votre carte n'est pas expirée. Essayez un
+   autre moyen de paiement. Si le problème persiste, contactez
    votre banque ou notre support.
 
-Q: Probleme de compte (connexion, mot de passe)
-R: Cliquez sur "Mot de passe oublie" sur la page de connexion.
-   Si le probleme persiste, contactez le support avec l'email
-   associe a votre compte.
+Q: Problème de compte (connexion, mot de passe)
+R: Cliquez sur "Mot de passe oublié" sur la page de connexion.
+   Si le problème persiste, contactez le support avec l'email
+   associé à votre compte.
 
-PROCEDURE DE TICKET :
-Categories : livraison, produit, paiement, compte, autre
-Urgence : haute (commande bloquee, defaut), moyenne (retour,
-          echange), basse (question, feedback)
+PROCÉDURE DE TICKET :
+Catégories : livraison, produit, paiement, compte, autre
+Urgence : haute (commande bloquée, défaut), moyenne (retour,
+          échange), basse (question, feedback)
 ```
 
 ### Livrables attendus
 
-1. Prompt systeme "support de marque" + regles de securite
-2. Flow : diagnostic, solution base de connaissances, sinon creation ticket
-3. "Note CRM / Ticket" structuree :
-   - Categorie
+1. Prompt système "support de marque" + règles de sécurité
+2. Flow : diagnostic, solution base de connaissances, sinon création ticket
+3. "Fiche de synthèse / Ticket" structurée :
+   - Catégorie
    - Description courte
-   - Etapes deja testees par le client
-   - Numero de commande
+   - Étapes déjà testées par le client
+   - Numéro de commande
    - Urgence
-   - Pieces a joindre (si besoin)
-4. KPI : deflexion, FCR (First Contact Resolution), AHT (temps de resolution humain), CSAT, taux de recontact
+   - Pièces à joindre (si besoin)
+4. KPI : déflexion, FCR (First Contact Resolution), AHT (temps de résolution humain), CSAT, taux de recontact
