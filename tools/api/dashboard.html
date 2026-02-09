@@ -1,0 +1,1432 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marketing Tools — Dashboard</title>
+<style>
+/* ── Reset & Base ─────────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-primary: #0f1729;
+  --bg-secondary: #1a2332;
+  --bg-card: #1e2a3a;
+  --bg-card-hover: #243347;
+  --border: #2a3a4e;
+  --text-primary: #f0f4f8;
+  --text-secondary: #8899aa;
+  --text-muted: #5a6a7a;
+
+  --teal: #2dd4bf;
+  --teal-dim: rgba(45, 212, 191, 0.15);
+  --orange: #fb923c;
+  --orange-dim: rgba(251, 146, 60, 0.15);
+  --purple: #a78bfa;
+  --purple-dim: rgba(167, 139, 250, 0.15);
+  --pink: #f472b6;
+  --pink-dim: rgba(244, 114, 182, 0.15);
+
+  --status-blue: #60a5fa;
+  --status-yellow: #fbbf24;
+  --status-green: #34d399;
+  --status-purple: #a78bfa;
+  --status-red: #f87171;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.25);
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.2);
+  --transition: 0.2s ease;
+}
+
+html { font-size: 15px; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.5;
+}
+
+/* ── Top Bar ──────────────────────────────────────────────────────────── */
+.topbar {
+  background: var(--bg-secondary);
+  border-bottom: 1px solid var(--border);
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(12px);
+}
+
+.topbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.topbar-logo {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--teal), var(--purple));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: white;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+
+.topbar-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.topbar-title span {
+  color: var(--text-secondary);
+  font-weight: 400;
+  margin-left: 0.25rem;
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+
+.status-indicator {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--status-red);
+  transition: background var(--transition);
+}
+
+.status-dot.connected {
+  background: var(--status-green);
+  box-shadow: 0 0 8px rgba(52, 211, 153, 0.6);
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 4px rgba(52, 211, 153, 0.4); }
+  50% { box-shadow: 0 0 12px rgba(52, 211, 153, 0.8); }
+}
+
+.last-refresh {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+
+.btn-reset {
+  background: transparent;
+  border: 1px solid var(--status-red);
+  color: var(--status-red);
+  padding: 0.35rem 0.85rem;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.btn-reset:hover {
+  background: rgba(248, 113, 113, 0.15);
+}
+
+/* ── Tab Navigation ───────────────────────────────────────────────────── */
+.tab-nav {
+  display: flex;
+  gap: 0.25rem;
+  padding: 0.75rem 1.5rem 0;
+  background: var(--bg-secondary);
+  overflow-x: auto;
+}
+
+.tab-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  padding: 0.65rem 1.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+  transition: all var(--transition);
+  white-space: nowrap;
+  position: relative;
+}
+
+.tab-btn::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  border-radius: 2px 2px 0 0;
+  background: transparent;
+  transition: background var(--transition);
+}
+
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-card);
+}
+
+.tab-btn.active {
+  color: var(--text-primary);
+  background: var(--bg-primary);
+}
+
+.tab-btn[data-tab="leads"].active::after { background: var(--teal); }
+.tab-btn[data-tab="calendar"].active::after { background: var(--orange); }
+.tab-btn[data-tab="products"].active::after { background: var(--purple); }
+.tab-btn[data-tab="orders"].active::after { background: var(--pink); }
+
+.tab-btn .tab-icon { margin-right: 0.4rem; }
+.tab-btn .tab-count {
+  margin-left: 0.4rem;
+  font-size: 0.7rem;
+  background: var(--bg-card);
+  padding: 0.1rem 0.45rem;
+  border-radius: 10px;
+  font-weight: 700;
+}
+
+/* ── Main Content ─────────────────────────────────────────────────────── */
+.main {
+  padding: 1.25rem 1.5rem 2rem;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.tab-panel { display: none; }
+.tab-panel.active { display: block; animation: fadeIn 0.25s ease; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Panel Subtitle ──────────────────────────────────────────────────── */
+.panel-subtitle {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 1rem;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  font-weight: 600;
+}
+
+/* ── Stats Bar ────────────────────────────────────────────────────────── */
+.stats-bar {
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 1.25rem;
+  overflow-x: auto;
+  padding-bottom: 0.25rem;
+}
+
+.stat-chip {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.6rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.stat-chip-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+}
+
+.stat-chip-label {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stat-chip.accent-teal .stat-chip-value { color: var(--teal); }
+.stat-chip.accent-orange .stat-chip-value { color: var(--orange); }
+.stat-chip.accent-purple .stat-chip-value { color: var(--purple); }
+.stat-chip.accent-pink .stat-chip-value { color: var(--pink); }
+
+/* ── Card ─────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow-sm);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.card-header h3 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+/* ── Table ─────────────────────────────────────────────────────────────── */
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead th {
+  padding: 0.65rem 1rem;
+  text-align: left;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--text-muted);
+  background: rgba(0,0,0,0.15);
+  border-bottom: 1px solid var(--border);
+}
+
+.data-table tbody td {
+  padding: 0.7rem 1rem;
+  font-size: 0.85rem;
+  border-bottom: 1px solid rgba(42, 58, 78, 0.5);
+  vertical-align: middle;
+}
+
+.data-table tbody tr {
+  transition: background var(--transition);
+}
+
+.data-table tbody tr:hover {
+  background: var(--bg-card-hover);
+}
+
+.data-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ── Badges ────────────────────────────────────────────────────────────── */
+.badge {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-nouveau { background: rgba(96,165,250,0.15); color: var(--status-blue); }
+.badge-contacte { background: rgba(251,191,36,0.15); color: var(--status-yellow); }
+.badge-qualifie { background: rgba(52,211,153,0.15); color: var(--status-green); }
+.badge-converti { background: rgba(167,139,250,0.15); color: var(--status-purple); }
+.badge-perdu { background: rgba(248,113,113,0.15); color: var(--status-red); }
+
+.badge-livree { background: rgba(52,211,153,0.15); color: var(--status-green); }
+.badge-en-preparation { background: rgba(251,191,36,0.15); color: var(--status-yellow); }
+.badge-en-cours-de-livraison { background: rgba(96,165,250,0.15); color: var(--status-blue); }
+
+.badge-category {
+  background: var(--purple-dim);
+  color: var(--purple);
+}
+
+.badge-brand {
+  font-size: 0.65rem;
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.badge-brand-soundpulse { background: rgba(96,165,250,0.15); color: var(--status-blue); }
+.badge-brand-velora { background: rgba(167,139,250,0.15); color: var(--status-purple); }
+.badge-brand-cloudbox { background: rgba(52,211,153,0.15); color: var(--status-green); }
+
+/* ── Score Bar ─────────────────────────────────────────────────────────── */
+.score-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.score-bar-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  min-width: 60px;
+}
+
+.score-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+.score-bar-value {
+  font-size: 0.75rem;
+  font-weight: 700;
+  min-width: 28px;
+  text-align: right;
+}
+
+/* ── Stock Bar ─────────────────────────────────────────────────────────── */
+.stock-bar {
+  width: 100%;
+  height: 5px;
+  background: rgba(255,255,255,0.08);
+  border-radius: 3px;
+  overflow: hidden;
+  margin-top: 0.35rem;
+}
+
+.stock-bar-fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.6s ease;
+}
+
+/* ── Calendar ─────────────────────────────────────────────────────────── */
+.date-group {
+  margin-bottom: 1.5rem;
+}
+
+.date-group-header {
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  color: var(--orange);
+  margin-bottom: 0.75rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.date-group-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border);
+}
+
+.rdv-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+}
+
+.rdv-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  transition: all var(--transition);
+  border-left: 3px solid var(--orange);
+}
+
+.rdv-card:hover {
+  background: var(--bg-card-hover);
+  transform: translateX(3px);
+}
+
+.rdv-time {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--orange);
+  min-width: 52px;
+  flex-shrink: 0;
+}
+
+.rdv-duration {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.rdv-details { flex: 1; }
+
+.rdv-title {
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-bottom: 0.2rem;
+}
+
+.rdv-client {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.rdv-type {
+  font-size: 0.85rem;
+  margin-left: auto;
+  flex-shrink: 0;
+  padding: 0.25rem 0.65rem;
+  background: var(--orange-dim);
+  border-radius: 6px;
+  color: var(--orange);
+  font-weight: 600;
+  font-size: 0.75rem;
+}
+
+.rdv-notes {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 0.3rem;
+  font-style: italic;
+}
+
+/* ── Product Grid ─────────────────────────────────────────────────────── */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1rem;
+}
+
+.product-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 1.1rem;
+  transition: all var(--transition);
+  position: relative;
+  overflow: hidden;
+}
+
+.product-card:hover {
+  border-color: var(--purple);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow);
+}
+
+.product-card.rupture {
+  opacity: 0.7;
+}
+
+.product-card.rupture::before {
+  content: 'RUPTURE';
+  position: absolute;
+  top: 16px;
+  right: -32px;
+  background: var(--status-red);
+  color: white;
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  padding: 0.2rem 2.5rem;
+  transform: rotate(45deg);
+  z-index: 2;
+}
+
+.product-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 0.5rem;
+}
+
+.product-name {
+  font-weight: 700;
+  font-size: 0.95rem;
+  line-height: 1.3;
+  flex: 1;
+  margin-right: 0.5rem;
+}
+
+.product-bestseller {
+  color: #fbbf24;
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.product-price {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--purple);
+  margin: 0.5rem 0;
+}
+
+.product-price::after { content: ' \20AC'; }
+
+.product-specs {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin: 0.35rem 0;
+  font-style: italic;
+}
+
+.product-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+}
+
+.product-stock-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.product-id {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+/* ── Brand Section Headers ───────────────────────────────────────────── */
+.brand-section {
+  margin-bottom: 2rem;
+}
+
+.brand-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.brand-header-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+  flex-shrink: 0;
+}
+
+.brand-header-icon.soundpulse { background: rgba(96,165,250,0.15); }
+.brand-header-icon.velora { background: rgba(167,139,250,0.15); }
+.brand-header-icon.cloudbox { background: rgba(52,211,153,0.15); }
+
+.brand-header-text h4 {
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.brand-header-text span {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.brand-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+}
+
+@media (max-width: 900px) {
+  .brand-split { grid-template-columns: 1fr; }
+}
+
+/* ── Orders & Carts Split ─────────────────────────────────────────────── */
+.split-view {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+}
+
+@media (max-width: 900px) {
+  .split-view { grid-template-columns: 1fr; }
+}
+
+.order-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.65rem;
+  border-left: 3px solid var(--pink);
+  transition: all var(--transition);
+}
+
+.order-card:hover {
+  background: var(--bg-card-hover);
+}
+
+.order-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.35rem;
+}
+
+.order-numero {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 0.85rem;
+  color: var(--pink);
+}
+
+.order-total {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.order-client {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.order-date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+}
+
+.order-articles {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+.order-brand-tag {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  margin-top: 0.2rem;
+}
+
+.cart-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 1rem 1.25rem;
+  margin-bottom: 0.65rem;
+  border-left: 3px solid var(--status-red);
+  transition: all var(--transition);
+}
+
+.cart-card:hover {
+  background: var(--bg-card-hover);
+}
+
+.cart-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.3rem;
+}
+
+.cart-client {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.cart-total {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--status-red);
+}
+
+.cart-step {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+}
+
+.cart-relance {
+  font-size: 0.78rem;
+  margin-top: 0.3rem;
+}
+
+.cart-articles {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 0.35rem;
+}
+
+.recovery-banner {
+  background: linear-gradient(135deg, rgba(244,114,182,0.1), rgba(248,113,113,0.1));
+  border: 1px solid rgba(244,114,182,0.25);
+  border-radius: var(--radius);
+  padding: 1rem 1.5rem;
+  margin-top: 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.recovery-label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+.recovery-value {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--pink);
+}
+
+/* ── Section Label ─────────────────────────────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+}
+
+.section-label.pink { color: var(--pink); }
+.section-label.pink::after { content: ''; flex: 1; height: 1px; background: rgba(244,114,182,0.3); }
+.section-label.red { color: var(--status-red); }
+.section-label.red::after { content: ''; flex: 1; height: 1px; background: rgba(248,113,113,0.3); }
+.section-label.blue { color: var(--status-blue); }
+.section-label.blue::after { content: ''; flex: 1; height: 1px; background: rgba(96,165,250,0.3); }
+.section-label.green { color: var(--status-green); }
+.section-label.green::after { content: ''; flex: 1; height: 1px; background: rgba(52,211,153,0.3); }
+.section-label.purple { color: var(--purple); }
+.section-label.purple::after { content: ''; flex: 1; height: 1px; background: rgba(167,139,250,0.3); }
+
+/* ── Loading / Error ──────────────────────────────────────────────────── */
+.loading-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+}
+
+.loading-spinner {
+  display: inline-block;
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(255,255,255,0.1);
+  border-top-color: var(--teal);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin-bottom: 0.75rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.error-state {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--status-red);
+  font-size: 0.85rem;
+}
+
+/* ── Empty state ──────────────────────────────────────────────────────── */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+
+/* ── Responsive ───────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  html { font-size: 14px; }
+  .topbar { padding: 0.6rem 1rem; }
+  .tab-nav { padding: 0.5rem 1rem 0; }
+  .main { padding: 1rem; }
+  .stats-bar { gap: 0.5rem; }
+  .product-grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); }
+}
+
+@media (max-width: 480px) {
+  .topbar-title span { display: none; }
+  .tab-btn { padding: 0.5rem 0.75rem; font-size: 0.78rem; }
+  .tab-btn .tab-count { display: none; }
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+
+/* ── Refresh pulse on topbar ──────────────────────────────────────────── */
+.topbar.refreshing {
+  border-bottom-color: var(--teal);
+  transition: border-bottom-color 0.3s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- ── Top Bar ────────────────────────────────────────────────────────── -->
+<header class="topbar" id="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">MT</div>
+    <div class="topbar-title">Marketing Tools<span>Dashboard</span></div>
+  </div>
+  <div class="topbar-right">
+    <div class="status-indicator">
+      <div class="status-dot" id="statusDot"></div>
+      <span id="statusLabel">Connexion...</span>
+    </div>
+    <span class="last-refresh" id="lastRefresh">--</span>
+    <button class="btn-reset" id="btnReset" title="Reinitialiser les donnees">Reset Data</button>
+  </div>
+</header>
+
+<!-- ── Tab Navigation ─────────────────────────────────────────────────── -->
+<nav class="tab-nav">
+  <button class="tab-btn active" data-tab="leads">
+    <span class="tab-icon">&#x1f465;</span>CRM Leads<span class="tab-count" id="countLeads">-</span>
+  </button>
+  <button class="tab-btn" data-tab="calendar">
+    <span class="tab-icon">&#x1f4c5;</span>Calendrier<span class="tab-count" id="countCalendar">-</span>
+  </button>
+  <button class="tab-btn" data-tab="products">
+    <span class="tab-icon">&#x1f6cd;</span>Catalogue Produits<span class="tab-count" id="countProducts">-</span>
+  </button>
+  <button class="tab-btn" data-tab="orders">
+    <span class="tab-icon">&#x1f4e6;</span>Commandes & Paniers<span class="tab-count" id="countOrders">-</span>
+  </button>
+</nav>
+
+<!-- ── Main Content ───────────────────────────────────────────────────── -->
+<main class="main">
+
+  <!-- LEADS PANEL -->
+  <section class="tab-panel active" id="panel-leads">
+    <div class="panel-subtitle">FlowDesk — CRM & Marketing Automation</div>
+    <div class="stats-bar" id="leadsStats"></div>
+    <div class="card">
+      <div class="card-header">
+        <h3>Tous les leads</h3>
+      </div>
+      <div id="leadsTable">
+        <div class="loading-state"><div class="loading-spinner"></div><br>Chargement...</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CALENDAR PANEL -->
+  <section class="tab-panel" id="panel-calendar">
+    <div class="panel-subtitle">FlowDesk — Demos & RDV</div>
+    <div class="stats-bar" id="calendarStats"></div>
+    <div id="calendarContent">
+      <div class="loading-state"><div class="loading-spinner"></div><br>Chargement...</div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS PANEL -->
+  <section class="tab-panel" id="panel-products">
+    <div class="stats-bar" id="productsStats"></div>
+    <div id="productsContent">
+      <div class="loading-state"><div class="loading-spinner"></div><br>Chargement...</div>
+    </div>
+  </section>
+
+  <!-- ORDERS PANEL -->
+  <section class="tab-panel" id="panel-orders">
+    <div class="stats-bar" id="ordersStats"></div>
+    <div id="ordersContent">
+      <div class="loading-state"><div class="loading-spinner"></div><br>Chargement...</div>
+    </div>
+  </section>
+
+</main>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════════════
+   CONFIG
+   ══════════════════════════════════════════════════════════════════════════ */
+const API_URL = "https://belle-bio-api-production.up.railway.app";
+const REFRESH_INTERVAL = 5000;
+
+/* ── State ────────────────────────────────────────────────────────────── */
+let connected = false;
+let refreshTimer = null;
+
+/* ── DOM refs ─────────────────────────────────────────────────────────── */
+const $ = (sel) => document.querySelector(sel);
+const $$ = (sel) => document.querySelectorAll(sel);
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TAB SYSTEM
+   ══════════════════════════════════════════════════════════════════════════ */
+$$('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $$('.tab-btn').forEach(b => b.classList.remove('active'));
+    $$('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    $(`#panel-${btn.dataset.tab}`).classList.add('active');
+  });
+});
+
+/* ══════════════════════════════════════════════════════════════════════════
+   API HELPERS
+   ══════════════════════════════════════════════════════════════════════════ */
+async function apiFetch(path) {
+  const res = await fetch(`${API_URL}${path}`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return res.json();
+}
+
+function setConnected(val) {
+  connected = val;
+  const dot = $('#statusDot');
+  const label = $('#statusLabel');
+  if (val) {
+    dot.classList.add('connected');
+    label.textContent = 'Connecte';
+  } else {
+    dot.classList.remove('connected');
+    label.textContent = 'Deconnecte';
+  }
+}
+
+function updateRefreshTime() {
+  const now = new Date();
+  const hh = String(now.getHours()).padStart(2, '0');
+  const mm = String(now.getMinutes()).padStart(2, '0');
+  const ss = String(now.getSeconds()).padStart(2, '0');
+  $('#lastRefresh').textContent = `Maj ${hh}:${mm}:${ss}`;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RENDER: LEADS
+   ══════════════════════════════════════════════════════════════════════════ */
+function renderLeads(data) {
+  const leads = data.leads || [];
+  $('#countLeads').textContent = leads.length;
+
+  // Stats
+  const statusCounts = {};
+  leads.forEach(l => { statusCounts[l.statut] = (statusCounts[l.statut] || 0) + 1; });
+
+  const statusLabels = {
+    nouveau: 'Nouveaux',
+    contacte: 'Contactes',
+    qualifie: 'Qualifies',
+    converti: 'Convertis',
+    perdu: 'Perdus'
+  };
+
+  let statsHtml = `<div class="stat-chip accent-teal"><div><div class="stat-chip-value">${leads.length}</div><div class="stat-chip-label">Total leads</div></div></div>`;
+  Object.entries(statusLabels).forEach(([key, label]) => {
+    const count = statusCounts[key] || 0;
+    if (count > 0) {
+      statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value">${count}</div><div class="stat-chip-label">${label}</div></div></div>`;
+    }
+  });
+  $('#leadsStats').innerHTML = statsHtml;
+
+  // Table
+  if (leads.length === 0) {
+    $('#leadsTable').innerHTML = '<div class="empty-state">Aucun lead</div>';
+    return;
+  }
+
+  let html = `<table class="data-table"><thead><tr>
+    <th>ID</th><th>Nom</th><th>Email</th><th>Entreprise</th><th>Taille</th><th>Source</th><th>Interet</th><th>Statut</th><th>Score</th>
+  </tr></thead><tbody>`;
+
+  leads.forEach(l => {
+    const scoreColor = l.score >= 80 ? 'var(--status-green)' : l.score >= 50 ? 'var(--status-yellow)' : 'var(--status-red)';
+    html += `<tr>
+      <td style="color:var(--text-muted); font-family:monospace; font-size:0.78rem">${l.id}</td>
+      <td style="font-weight:600">${esc(l.nom)}</td>
+      <td style="color:var(--text-secondary); font-size:0.8rem">${esc(l.email)}</td>
+      <td style="font-size:0.82rem">${esc(l.entreprise || '')}</td>
+      <td style="font-size:0.78rem; color:var(--text-secondary)">${esc(l.taille || '')}</td>
+      <td><span style="font-size:0.78rem">${esc(l.source)}</span></td>
+      <td><span style="font-size:0.78rem">${esc(l.interet)}</span></td>
+      <td><span class="badge badge-${l.statut}">${l.statut}</span></td>
+      <td>
+        <div class="score-bar">
+          <div class="score-bar-track"><div class="score-bar-fill" style="width:${l.score}%;background:${scoreColor}"></div></div>
+          <span class="score-bar-value" style="color:${scoreColor}">${l.score}</span>
+        </div>
+      </td>
+    </tr>`;
+  });
+
+  html += '</tbody></table>';
+  $('#leadsTable').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RENDER: CALENDAR
+   ══════════════════════════════════════════════════════════════════════════ */
+function renderCalendar(data) {
+  const rdvs = data.rdv || [];
+  $('#countCalendar').textContent = rdvs.length;
+
+  // Stats
+  const types = {};
+  rdvs.forEach(r => { types[r.type] = (types[r.type] || 0) + 1; });
+
+  let statsHtml = `<div class="stat-chip accent-orange"><div><div class="stat-chip-value">${rdvs.length}</div><div class="stat-chip-label">Rendez-vous</div></div></div>`;
+  Object.entries(types).forEach(([type, count]) => {
+    const icon = type === 'visio' ? '\uD83D\uDCF9' : type === 'telephone' || type === 'téléphone' ? '\uD83D\uDCDE' : '\uD83C\uDFE2';
+    statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value">${count}</div><div class="stat-chip-label">${icon} ${type}</div></div></div>`;
+  });
+  $('#calendarStats').innerHTML = statsHtml;
+
+  if (rdvs.length === 0) {
+    $('#calendarContent').innerHTML = '<div class="empty-state">Aucun rendez-vous</div>';
+    return;
+  }
+
+  // Group by date
+  const groups = {};
+  rdvs.forEach(r => {
+    if (!groups[r.date]) groups[r.date] = [];
+    groups[r.date].push(r);
+  });
+
+  let html = '';
+  const dateFormatter = new Intl.DateTimeFormat('fr-FR', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+
+  Object.keys(groups).sort().forEach(date => {
+    const dateObj = new Date(date + 'T00:00:00');
+    const formattedDate = dateFormatter.format(dateObj);
+    html += `<div class="date-group"><div class="date-group-header">${formattedDate}</div><div class="rdv-list">`;
+
+    groups[date].sort((a, b) => a.heure.localeCompare(b.heure)).forEach(r => {
+      const typeIcon = r.type === 'visio' ? '\uD83D\uDCF9' : (r.type === 'telephone' || r.type === 'téléphone') ? '\uD83D\uDCDE' : '\uD83C\uDFE2';
+      const typeLabel = r.type === 'visio' ? 'Visio' : (r.type === 'telephone' || r.type === 'téléphone') ? 'Telephone' : 'Presentiel';
+
+      html += `<div class="rdv-card">
+        <div class="rdv-time">${esc(r.heure)}<div class="rdv-duration">${r.duree} min</div></div>
+        <div class="rdv-details">
+          <div class="rdv-title">${esc(r.titre)}</div>
+          <div class="rdv-client">${esc(r.client)}</div>
+          ${r.notes ? `<div class="rdv-notes">${esc(r.notes)}</div>` : ''}
+        </div>
+        <div class="rdv-type">${typeIcon} ${typeLabel}</div>
+      </div>`;
+    });
+
+    html += '</div></div>';
+  });
+
+  $('#calendarContent').innerHTML = html;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RENDER: PRODUCTS (split by brand)
+   ══════════════════════════════════════════════════════════════════════════ */
+function renderProducts(data) {
+  const produits = data.produits || [];
+  $('#countProducts').textContent = produits.length;
+
+  // Stats
+  const brands = {};
+  let bestSellers = 0;
+  let rupture = 0;
+  produits.forEach(p => {
+    const b = p.marque || 'Autre';
+    brands[b] = (brands[b] || 0) + 1;
+    if (p.best_seller) bestSellers++;
+    if (p.stock === 0) rupture++;
+  });
+
+  let statsHtml = `<div class="stat-chip accent-purple"><div><div class="stat-chip-value">${produits.length}</div><div class="stat-chip-label">Produits</div></div></div>`;
+  statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value">${bestSellers}</div><div class="stat-chip-label">Best-sellers</div></div></div>`;
+  if (rupture > 0) {
+    statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value" style="color:var(--status-red)">${rupture}</div><div class="stat-chip-label">En rupture</div></div></div>`;
+  }
+  Object.entries(brands).forEach(([brand, count]) => {
+    statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value">${count}</div><div class="stat-chip-label">${brand}</div></div></div>`;
+  });
+  $('#productsStats').innerHTML = statsHtml;
+
+  if (produits.length === 0) {
+    $('#productsContent').innerHTML = '<div class="empty-state">Aucun produit</div>';
+    return;
+  }
+
+  // Split by brand
+  const soundpulse = produits.filter(p => (p.marque || '').toLowerCase() === 'soundpulse');
+  const velora = produits.filter(p => (p.marque || '').toLowerCase() === 'velora');
+  const other = produits.filter(p => {
+    const m = (p.marque || '').toLowerCase();
+    return m !== 'soundpulse' && m !== 'velora';
+  });
+
+  let html = '<div class="brand-split">';
+
+  // SoundPulse section
+  html += '<div class="brand-section">';
+  html += `<div class="brand-header">
+    <div class="brand-header-icon soundpulse">&#x1f3b5;</div>
+    <div class="brand-header-text"><h4>SoundPulse</h4><span>Audio Lifestyle</span></div>
+  </div>`;
+  html += renderProductGrid(soundpulse);
+  html += '</div>';
+
+  // Velora section
+  html += '<div class="brand-section">';
+  html += `<div class="brand-header">
+    <div class="brand-header-icon velora">&#x1f48e;</div>
+    <div class="brand-header-text"><h4>Velora</h4><span>Mode Durable</span></div>
+  </div>`;
+  html += renderProductGrid(velora);
+  html += '</div>';
+
+  html += '</div>';
+
+  // Other brands (if any)
+  if (other.length > 0) {
+    html += '<div class="brand-section" style="margin-top:1.5rem">';
+    html += '<div class="section-label purple">Autres marques</div>';
+    html += renderProductGrid(other);
+    html += '</div>';
+  }
+
+  $('#productsContent').innerHTML = html;
+}
+
+function renderProductGrid(produits) {
+  if (produits.length === 0) {
+    return '<div class="empty-state">Aucun produit</div>';
+  }
+
+  let html = '<div class="product-grid">';
+
+  produits.forEach(p => {
+    const isRupture = p.stock === 0;
+    const maxStock = 250;
+    const stockPct = Math.min(100, (p.stock / maxStock) * 100);
+    const stockColor = p.stock === 0 ? 'var(--status-red)' : p.stock < 20 ? 'var(--status-yellow)' : 'var(--status-green)';
+    const stockLabel = p.stock === 0 ? 'Rupture de stock' : p.stock < 20 ? `Stock faible (${p.stock})` : `En stock (${p.stock})`;
+
+    html += `<div class="product-card${isRupture ? ' rupture' : ''}">
+      <div class="product-top">
+        <div class="product-name">${esc(p.nom)}</div>
+        ${p.best_seller ? '<div class="product-bestseller" title="Best-seller">\u2605</div>' : ''}
+      </div>
+      <span class="badge badge-category">${esc(p.categorie)}</span>
+      <div class="product-price">${p.prix.toFixed(2)}</div>
+      ${p.specs ? `<div class="product-specs">${esc(p.specs)}</div>` : ''}
+      <div class="product-meta">
+        <span class="product-stock-label" style="color:${stockColor}">${stockLabel}</span>
+        <span class="product-id">${esc(p.id)}</span>
+      </div>
+      <div class="stock-bar"><div class="stock-bar-fill" style="width:${stockPct}%;background:${stockColor}"></div></div>
+    </div>`;
+  });
+
+  html += '</div>';
+  return html;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RENDER: ORDERS & CARTS (split by brand)
+   ══════════════════════════════════════════════════════════════════════════ */
+function renderOrders(commandes, paniersData) {
+  const paniers = paniersData.paniers || [];
+  const potentiel = paniersData.potentiel_recuperation || 0;
+
+  const totalItems = commandes.length + paniers.length;
+  $('#countOrders').textContent = totalItems;
+
+  // Stats
+  let totalRevenue = 0;
+  commandes.forEach(c => { totalRevenue += c.total; });
+
+  let statsHtml = `<div class="stat-chip accent-pink"><div><div class="stat-chip-value">${commandes.length}</div><div class="stat-chip-label">Commandes</div></div></div>`;
+  statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value">${paniers.length}</div><div class="stat-chip-label">Paniers abandonnes</div></div></div>`;
+  statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value">${formatEuro(totalRevenue)}</div><div class="stat-chip-label">CA commandes</div></div></div>`;
+  statsHtml += `<div class="stat-chip"><div><div class="stat-chip-value" style="color:var(--status-red)">${formatEuro(potentiel)}</div><div class="stat-chip-label">Potentiel recup.</div></div></div>`;
+  $('#ordersStats').innerHTML = statsHtml;
+
+  // Split commandes by brand
+  const veloraOrders = commandes.filter(c => (c.marque || '').toLowerCase() === 'velora');
+  const cloudboxOrders = commandes.filter(c => (c.marque || '').toLowerCase() === 'cloudbox');
+  const otherOrders = commandes.filter(c => {
+    const m = (c.marque || '').toLowerCase();
+    return m !== 'velora' && m !== 'cloudbox';
+  });
+
+  let html = '<div class="split-view"><div>';
+
+  // Left: Commandes by brand
+  // Velora orders
+  html += '<div class="section-label pink">Commandes Velora</div>';
+  if (veloraOrders.length === 0) {
+    html += '<div class="empty-state">Aucune commande Velora</div>';
+  } else {
+    html += renderOrderCards(veloraOrders);
+  }
+
+  // CloudBox orders
+  html += '<div class="section-label green" style="margin-top:1.5rem">Abonnements CloudBox</div>';
+  if (cloudboxOrders.length === 0) {
+    html += '<div class="empty-state">Aucun abonnement CloudBox</div>';
+  } else {
+    html += renderOrderCards(cloudboxOrders);
+  }
+
+  // Other orders (if any)
+  if (otherOrders.length > 0) {
+    html += '<div class="section-label blue" style="margin-top:1.5rem">Autres commandes</div>';
+    html += renderOrderCards(otherOrders);
+  }
+
+  html += '</div><div>';
+
+  // Right: Abandoned carts
+  html += '<div class="section-label red">Paniers abandonnes</div>';
+  if (paniers.length === 0) {
+    html += '<div class="empty-state">Aucun panier abandonne</div>';
+  } else {
+    paniers.forEach(p => {
+      const relanceIcon = p.relance_envoyee ? '<span style="color:var(--status-green)" title="Relance envoyee">\u2713</span>' : '<span style="color:var(--status-red)" title="Pas de relance">\u2717</span>';
+      const articleSummary = (p.articles || []).map(a => `${a.produit} x${a.qte}`).join(', ');
+
+      html += `<div class="cart-card">
+        <div class="cart-header">
+          <span class="cart-client">${esc(p.client)}</span>
+          <span class="cart-total">${formatEuro(p.total)}</span>
+        </div>
+        <div class="cart-step">Abandon : ${esc(p.etape_abandon)}</div>
+        <div class="cart-relance">Relance : ${relanceIcon} ${p.relance_envoyee ? 'Envoyee' : 'Non envoyee'}</div>
+        <div class="cart-articles" title="${esc(articleSummary)}">${esc(articleSummary)}</div>
+      </div>`;
+    });
+  }
+
+  html += '</div></div>';
+
+  // Recovery banner
+  html += `<div class="recovery-banner">
+    <span class="recovery-label">Potentiel de recuperation (paniers sans relance) &mdash; Code promo : <strong>BIENVENUE10</strong></span>
+    <span class="recovery-value">${formatEuro(potentiel)}</span>
+  </div>`;
+
+  $('#ordersContent').innerHTML = html;
+}
+
+function renderOrderCards(orders) {
+  let html = '';
+  orders.forEach(c => {
+    const statusClass = c.statut.replace(/\s+/g, '-').replace(/[éè]/g, 'e');
+    const articleCount = (c.articles || []).length;
+    const articleSummary = (c.articles || []).map(a => `${a.produit} x${a.qte}`).join(', ');
+
+    html += `<div class="order-card">
+      <div class="order-header">
+        <span class="order-numero">${esc(c.numero)}</span>
+        <span class="badge badge-${statusClass}">${esc(c.statut)}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:0.25rem">
+        <span class="order-client">${esc(c.client)}</span>
+        <span class="order-total">${formatEuro(c.total)}</span>
+      </div>
+      <div class="order-date">${esc(c.date)} &middot; ${articleCount} article${articleCount > 1 ? 's' : ''}</div>
+      <div class="order-articles" title="${esc(articleSummary)}">${esc(articleSummary)}</div>
+    </div>`;
+  });
+  return html;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   DATA FETCHING
+   ══════════════════════════════════════════════════════════════════════════ */
+async function refreshAll() {
+  const topbar = $('#topbar');
+  topbar.classList.add('refreshing');
+
+  try {
+    const [leadsData, rdvData, produitsData, paniersData, commandesData] = await Promise.all([
+      apiFetch('/leads'),
+      apiFetch('/rdv'),
+      apiFetch('/produits'),
+      apiFetch('/paniers'),
+      apiFetch('/commandes')
+    ]);
+
+    setConnected(true);
+    updateRefreshTime();
+
+    renderLeads(leadsData);
+    renderCalendar(rdvData);
+    renderProducts(produitsData);
+    renderOrders(commandesData.commandes || [], paniersData);
+
+  } catch (err) {
+    console.error('Refresh error:', err);
+    setConnected(false);
+  }
+
+  setTimeout(() => topbar.classList.remove('refreshing'), 400);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   RESET
+   ══════════════════════════════════════════════════════════════════════════ */
+$('#btnReset').addEventListener('click', async () => {
+  if (!confirm('Reinitialiser toutes les donnees ?')) return;
+  try {
+    await fetch(`${API_URL}/reset`, { method: 'POST' });
+    await refreshAll();
+  } catch (err) {
+    console.error('Reset error:', err);
+    alert('Erreur lors du reset. Verifiez que l\'API est en ligne.');
+  }
+});
+
+/* ══════════════════════════════════════════════════════════════════════════
+   UTILITIES
+   ══════════════════════════════════════════════════════════════════════════ */
+function esc(str) {
+  if (str == null) return '';
+  const div = document.createElement('div');
+  div.textContent = String(str);
+  return div.innerHTML;
+}
+
+function formatEuro(n) {
+  return new Intl.NumberFormat('fr-FR', { style: 'currency', currency: 'EUR' }).format(n);
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   INIT
+   ══════════════════════════════════════════════════════════════════════════ */
+refreshAll();
+refreshTimer = setInterval(refreshAll, REFRESH_INTERVAL);
+</script>
+</body>
+</html>
