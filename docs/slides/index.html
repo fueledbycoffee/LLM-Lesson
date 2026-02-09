@@ -2141,6 +2141,15 @@ Si question juridique, technique pointue, ou client énervé
   </div>
 
   <script>
+    // If the deck is opened at a directory path without trailing slash (e.g. `/slides`),
+    // relative URLs like `assets/...` resolve incorrectly. Force `/slides/`.
+    (() => {
+      const p = window.location.pathname;
+      if (p.endsWith('/slides')) {
+        window.location.replace(`${p}/${window.location.search}${window.location.hash}`);
+      }
+    })();
+
     // State
     let currentDay = 1;
     let currentSlideIndex = 0;
